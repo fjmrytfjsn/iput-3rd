@@ -1,0 +1,15 @@
+Size: 200,  	Python: 0.6059s,	NumPy: 0.0020s, 	Cupy: 0.0260s, 	PyTorch: 0.0009s
+Size: 400,  	Python: 5.2042s,	NumPy: 0.0025s, 	Cupy: 0.0011s, 	PyTorch: 0.0000s
+Size: 600,  	Python: 20.5605s,	NumPy: 0.0039s, 	Cupy: 0.0018s, 	PyTorch: 0.0010s
+Size: 800,  	Python: 53.1748s,	NumPy: 0.0060s, 	Cupy: 0.0030s, 	PyTorch: 0.0020s
+Size: 1800,  	Python: --------,	NumPy: 0.0476s, 	Cupy: 0.0179s, 	PyTorch: 0.0180s
+Size: 2800,  	Python: --------,	NumPy: 0.1761s, 	Cupy: 0.0585s, 	PyTorch: 0.0585s
+Size: 3800,  	Python: --------,	NumPy: 0.3741s, 	Cupy: 0.1394s, 	PyTorch: 0.1396s
+Size: 4800,  	Python: --------,	NumPy: 0.6643s, 	Cupy: 0.2409s, 	PyTorch: 0.2172s
+Size: 5800,  	Python: --------,	NumPy: 1.2572s, 	Cupy: 0.2860s, 	PyTorch: 0.2317s
+Size: 6800,  	Python: --------,	NumPy: 1.8989s, 	Cupy: 0.3463s, 	PyTorch: 0.3224s
+Size: 7800,  	Python: --------,	NumPy: 3.0902s, 	Cupy: 0.1120s, 	PyTorch: 0.3983s
+Size: 8800,  	Python: --------,	NumPy: 3.8734s, 	Cupy: 0.1656s, 	PyTorch: 0.1691s
+Size: 9800,  	Python: --------,	NumPy: 5.4696s, 	Cupy: 0.2353s, 	PyTorch: 0.3565s
+Size: 10800,  	Python: --------,	NumPy: 12.1399s, 	Cupy: 0.3184s, 	PyTorch: 0.5472s
+Size: 11800,  	Python: --------,	NumPy: 9.9611s, 	Cupy: 0.3828s, 	PyTorch: OOM

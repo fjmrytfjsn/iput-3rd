@@ -1,0 +1,170 @@
+\usepackage[top=25truemm, bottom=25truemm, left=25truemm, right=25truemm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\usepackage{pdfpages}
+\usepackage{here}
+\usepackage{diagbox}
+\usepackage{slashbox}
+\usepackage{tikz}
+\bibliographystyle{MyStyle}
+
+%---------------------------------------------------------------------
+
+%番号付き箇条書き
+\usepackage{enumerate}
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+
+%---------------------------------------------------------------------
+
+%ハイパーリンク
+\usepackage[unicode,hidelinks,pdfusetitle]{hyperref}
+\hypersetup{
+    setpagesize=false,
+    colorlinks=false,
+    pdftitle={},
+    pdfsubject={},
+    pdfauthor={},
+    pdfkeywords={},
+    pdfencoding=auto
+}
+
+%---------------------------------------------------------------------
+
+\setcounter{secnumdepth}{6}
+\setlength\textfloatsep{2truemm}
+
+%---------------------------------------------------------------------
+
+\fontsize{11ptj}{16ptj}\selectfont
+\setlength{\baselineskip}{16pt}
+\setlength{\columnsep}{5mm}
+
+%---------------------------------------------------------------------
+
+\newcommand{\TableOfContents}{
+    \pagenumbering{roman}
+    \tableofcontents
+    \newpage
+    \pagenumbering{arabic}
+}
+
+%---------------------------------------------------------------------
+
+%表
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+%---------------------------------------------------------------------
+
+%Listings
+\usepackage{listings}
+\lstset{
+    basicstyle={\ttfamily},
+    identifierstyle={\small},
+    commentstyle={\small\itshape},
+    keywordstyle={\small\bfseries},
+    ndkeywordstyle={\small},
+    stringstyle={\small\ttfamily},
+    frame={tb},
+    tabsize=4,
+    breaklines=true,
+    columns=[l]{fullflexible},
+    numbers=left,
+    xrightmargin=0\zw,
+    xleftmargin=3\zw,
+    numberstyle={\scriptsize},
+    stepnumber=1,
+    numbersep=1\zw,
+    lineskip=-0.5\zh
+}
+\newcommand{\code}[3]{
+    \lstinputlisting[label={code:#1}, caption={#2}]{#3}
+}
+\renewcommand{\lstlistingname}{コード}
+
+%---------------------------------------------------------------------
+% \makeatletter
+% \def\Hline{
+% \noalign{\ifnum0=`}\fi\hrule \@height 2pt \futurelet
+%     \reserved@a\@xhline
+% }
+% \makeatother
+\newcommand{\Hline}{\noalign{\hrule height 2pt}}
+
+%キャプション(番号無し)
+\newcommand{\subcaption}[1]{
+    #1 \\
+    \vskip\baselineskip
+}
+
+%表の空欄
+\newcommand{\blank}{\textbf{---}}
+
+%数式(番号付き)
+\newcommand{\eq}[1]{
+    \begin{eqnarray}
+        #1
+    \end{eqnarray}
+}
+%数式(番号無し)
+\newcommand{\EQ}[1]{
+    \begin{eqnarray*}
+        #1
+    \end{eqnarray*}
+}
+
+%一階微分
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+%二階微分
+\newcommand{\DIFF}[2]{\frac{d^2 #1}{d {#2}^2}}
+
+%図(1つ)
+\newcommand{\fig}[4][0.9]{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#1\linewidth]{#4}
+        \caption{#3}\label{fig:#2}
+    \end{figure}
+}
+%図(2つ)
+\newcommand{\ffig}[6]{
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{0.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{#4}
+            \caption{#3}\label{fig:#3}
+        \end{minipage}
+        \begin{minipage}{0.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{#6}
+            \caption{#5}\label{fig:#2}
+        \end{minipage}
+    \end{figure}
+}
+%図(3つ)
+\newcommand{\fffig}[9]{
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{#4}
+            \caption{#3}\label{fig:#3}
+        \end{minipage}
+        \begin{minipage}{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{#6}
+            \caption{#5}\label{fig:#6}
+        \end{minipage}
+        \begin{minipage}{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{#8}
+            \caption{#7}\label{fig:#2}
+        \end{minipage}
+    \end{figure}
+}

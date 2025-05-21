@@ -1,0 +1,104 @@
+\documentclass{ltjsarticle}
+
+\title{
+    二次元行列同士の積の計算と二次元行列の畳み込みにおける
+    行列サイズと実行時間の関係と、
+    python, numpy, pyTorchの比較
+}
+\author{藤村勇仁}
+\date{\today}
+
+\input{macro}
+\begin{document}
+\input{titlepage}
+
+\TableOfContents
+\section{概要}
+    本課題では、2つの正方行列の積と正方行列と\(3\times3\)行列の畳み込み
+    それぞれを実行するpythonプログラムを作成して、
+    それぞれの行列サイズと実行時間の関係を調べる。
+    また、python, numpy, pytorchの3つのライブラリを用いて、
+    行列の積と畳み込みを行い、実行時間を比較する。
+
+\section{行列の積}
+    2つの正方行列の積の計算のサイズと実行時間の関係を調べ、
+    python, numpy, pyTorchの比較を行う。
+    行列のサイズは200から200ずつ増加させ、
+    pythonだけでの計算時間が60秒を超えたら1000ずつ増加させる。
+    行列のサイズが大きくなるにつれて、実行時間がどのように変化するかを調べる。
+
+\subsection{プログラム}
+    コード\ref{appx:multiply}に、行列の積を計算するpythonプログラムを示す。
+
+\subsection{実行結果}
+    コード\ref{code:multiply-result}と、図\ref{fig:multiply-result}に、行列の積の計算結果を示す。
+
+    \code{multiply-result}{付録\ref{appx:multiply}の実行結果}{../multiply-result.txt}
+    \fig[]{multiply-result}{付録\ref{appx:multiply}の実行結果}{../matrix_multiplication_time.png}
+
+\subsection{考察}
+    実行結果より、Python、NumPy、CuPy、PyTorchのいずれの方法も、理論上は \(O(n^3)\) に近い計算量であることがわかる。
+    しかし、実際の計算時間としては Python > NumPy > CuPy ≃ PyTorch となっており、
+    これはNumPyやCuPy、PyTorchが内部的にBLAS（Basic Linear Algebra Subprograms）ライブラリを使用しており、高速化されているためである。
+
+    BLASとは、線形代数の基本的な演算（行列積、ベクトル演算など）を高速に実行するための標準ライブラリで、
+    CPUのキャッシュやパイプラインの効率的な活用、マルチスレッドによる並列化といった最適化が行われている。
+
+    実際に、NumPyで使用されているBLAS実装を確認するために \verb|numpy.__config__.show()| を実行すると、以下のような出力が得られる：
+
+    \begin{lstlisting}
+"blas": {
+"name": "scipy-openblas",
+"found": true,
+"version": "0.3.27",
+"detection method": "pkgconfig",
+"include directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-4yyn90e0/cp312-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include",
+"lib directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-4yyn90e0/cp312-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib",
+"openblas configuration": "OpenBLAS 0.3.27  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24",
+"pc file directory": "D:/a/numpy/numpy/.openblas"
+},
+    \end{lstlisting}
+
+    このように、使用されているBLASライブラリがOpenBLASであることが確認できる。
+
+    また、CuPyやPyTorchは、明示的にGPUを使用する設定をすることで、行列積などの処理をGPU上で実行することができる。
+    GPU内部ではメモリ帯域幅が広く、大量の演算ユニットを活用した並列計算が可能であるため、CPUと比較して高速な処理が実現される。
+
+    その結果、同じアルゴリズム的には \(O(n^3)\) の処理でも、ハードウェアとライブラリの違いにより実行時間には大きな差が生じる。
+
+    本実験では、PyTorchではOOM（Out Of Memory）エラーが発生した行列サイズでも、CuPyでは正常に処理が行えた。これは、両者のGPUメモリ管理の違いに起因していると考えられる。
+    具体的には、PyTorchは自動微分機構や高速化のためのキャッシュを保持するため、メモリを多く使いやすいが、CuPyは中間データを持たず、必要な分だけメモリを確保・解放するため、効率的なメモリ利用ができる。
+    このため、CuPyの方がより大きな行列サイズでもOOMになりにくいという結果になったと考える。
+
+
+\section{行列の畳み込み}
+    正方行列と\(3\times3\)行列の畳み込みの計算のサイズと実行時間の関係を調べ、
+    python, numpy, pyTorchの比較を行う。
+    行列のサイズは1000から1000ずつ増加させていく。
+    行列のサイズが大きくなるにつれて、実行時間がどのように変化するかを調べる。
+
+    \subsection{プログラム}
+    コード\ref{appx:conv}に、行列の畳み込みを計算するpythonプログラムを示す。
+
+\subsection{実行結果}
+    コード\ref{code:conv-result}と、図\ref{fig:conv-result}に、行列の畳み込みの計算結果を示す。
+
+    \code{conv-result}{付録\ref{appx:conv}の実行結果}{../conv-result.txt}
+    \fig[]{conv-result}{付録\ref{appx:conv}の実行結果}{../matrix_convolution_time.png}
+
+\subsection{考察}
+    実行結果より、純粋Python（ネストしたfor文）、NumPy+SciPy（`scipy.signal.convolve2d`）、CuPy（`cupyx.scipy.ndimage.convolve`）、PyTorch（`torch.nn.functional.conv2d`）のいずれも、理論上は \(O(N^2 k^2)\) の計算量を要するものの、実際の計測では大きく異なる挙動を示した。具体的にはPython>NumPy/SciPy>CuPy≃PyTorch
+    という順序で処理時間が短縮され、Python実装ではループのオーバーヘッドやPythonレイヤーでのメモリアクセスコストが大きいことが確認された。NumPy/SciPyはC言語ベースのベクトル化処理によりPythonに比べて早いものの、あくまでCPU上での実行であるため、並列化の限界やメモリ帯域幅の制約が性能を制限する要因となったと考える。
+    一方、CuPyおよびPyTorchはGPUによる並列計算を利用し、CPUベースのライブラリに比べ桁違いに高速な畳み込みを実現した。
+
+\newpage
+\appendix
+
+\section{2次元行列同士の積を求めるプログラム}\label{appx:multiply}
+\code{multiply}{二次元行列同士の積を求めるプログラム}{../task2-multiply.py}
+\newpage
+
+\section{2次元行列の畳み込みを求めるプログラム}\label{appx:conv}
+\code{conv}{二次元行列の畳み込みを求めるプログラム}{../task2-conv.py}
+\end{document}
+

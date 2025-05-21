@@ -1,0 +1,37 @@
+[project]
+name = "deeplearning"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "fjmrytfjsn", email = "fjmrytfjsn@gmail.com" }
+]
+dependencies = [
+    "torch==2.6.0+cu118",
+    "torchvision==0.21.0+cu118",
+    "torchaudio==2.6.0+cu118",
+    "cupy-cuda11x>=13.4.1",
+    "matplotlib>=3.10.1",
+    "scipy>=1.15.2",
+    "psutil>=7.0.0",
+    "torchinfo>=1.8.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/deeplearning"]
+
+[[tool.rye.sources]]
+name = "pyTorch"
+url = "https://download.pytorch.org/whl/cu118"

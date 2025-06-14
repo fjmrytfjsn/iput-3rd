@@ -17,6 +17,11 @@ permissions:
   pull-requests: write
   issues: write
 
+env:
+  LLM_NUM_RETRIES: 1000
+  LLM_RETRY_MIN_WAIT: 60
+  LLM_RETRY_MAX_WAIT: 3000
+
 jobs:
   call-openhands-resolver:
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
@@ -27,9 +32,6 @@ jobs:
       LLM_MODEL: ${{ vars.LLM_MODEL || 'anthropic/claude-sonnet-4-20250514' }}
       target_branch: ${{ vars.TARGET_BRANCH || 'main' }}
       runner: ${{ vars.TARGET_RUNNER }}
-      LLM_NUM_RETRIES: 1000
-      LLM_RETRY_MIN_WAIT: 60
-      LLM_RETRY_MAX_WAIT: 3000
     secrets:
       PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.PAT_USERNAME }}
